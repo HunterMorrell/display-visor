@@ -1,6 +1,14 @@
 display-visor
 ==================
 
+
+Repo forked from https://github.com/beanaroo/display-visor
+
+Minor changes (as of now). Readme left alone.
+
+
+=================
+
 i3 does not manage displays and I move my laptop around a lot. This little script fills a much needed gap in my tiling window manager setup.
 
 How it works
@@ -9,8 +17,8 @@ When executed, it checks the available and connected display outputs and sets th
 
 At the moment I have three outputs defined: `LVDS1`, `HDMI1` and `VGA1`. For now, layout configuration is hard-coded. I am hoping to make this more dynamic.
 
-When lid is open (`-l`): LVDS (Primary) on left with HDMI or VGA on right. 
-My laptop can only handle two displays at a time, so if both HDMI and VGA are present, or... 
+When lid is open (`-l`): LVDS (Primary) on left with HDMI or VGA on right.
+My laptop can only handle two displays at a time, so if both HDMI and VGA are present, or...
 
 When lid is closed: HDMI (Primary) on left with VGA on right.
 
@@ -26,7 +34,7 @@ How to use it
 		-i, --i3	Test for i3wm instance.
                              For avoiding conflict with multiple environments.
 		-l, --lid	Check laptop lid status.
-                             Ignored/Assumed closed if not given. 
+                             Ignored/Assumed closed if not given.
                              It is possible to specify switch. Defaults to 'LID0'
                              If unsure, look under /proc/acpi/button/lid/...
 		-v, --version	Print version info.

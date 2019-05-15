@@ -1,6 +1,13 @@
 #!/bin/bash
 version="0.4"
 
+# # # #
+#
+# Large portion of this are not being used, since I only have one multi-monitor use case.
+# I also don't care about the laptop lid being closed, so the config_closed_lid function is not used.
+#
+# # # #
+
 usage ()
 {
 	echo \
@@ -11,7 +18,7 @@ usage ()
 	-i, --i3	Test for i3wm instance.
                          For avoiding conflict with multiple environments.
 	-l, --lid	Check laptop lid status.
-                         Ignored/Assumed closed if not given. 
+                         Ignored/Assumed closed if not given.
                          It is possible to specify switch. Defaults to 'LID0'
                          If unsure, look under /proc/acpi/button/lid/...
 	-v, --version	Print version info.
@@ -133,11 +140,11 @@ config_closed_lid ()
 config_open_lid ()
 {
     echo "$prefix Laptop lid is open"
-    if [ -n "$HDMI1" -a -n "$VGA1" ]; then
-        echo "$prefix SETTING: LVDS1 (Left) - HDMI1 (Primary) - VGA1 (Right)"
-        xrandr --output LVDS1 --off \
-               --output HDMI1 --auto --primary \
-               --output VGA1 --auto --right-of HDMI1
+    if [ -n "$DVII1" ]; then
+        echo "$prefix SETTING: DVI-I-2-2 (Left) - HDMI1 (Primary) - DVI-I-1-1 (Right)"
+        xrandr --output eDP-1 --mode 1920x1080 --pos 1080x1080 \
+          --output DVI-I-3-2 --mode 1920x1080 --pos 0x0 \
+          --output DVI-I-2-1 --mode 1920x1080 --pos 1920x0
     elif [ -n "$HDMI1" -a -z "$VGA1" ]; then
         echo "$prefix HDMI1 is plugged in, but not VGA1"
         echo "$prefix SETTING: LVDS1 (Primary) - HDMI1 (Right)"
@@ -164,11 +171,13 @@ configure_displays ()
 
     declare_outputs
 
-    if [ -z "$lidstatus" -o "$lidstatus" == "closed" ]; then
-        config_closed_lid
-    elif [ "$lidstatus" == "open" ]; then
+    # if [ -z "$lidstatus" -o "$lidstatus" == "closed" ]; then
+    #     echo "Lid Closed"
+    #     config_closed_lid
+    # elif [ "$lidstatus" == "open" ]; then
+        echo "Lid Open"
         config_open_lid
-    fi
+    # fi
 
     # Run .fehbg script if -f argument is given.
     if [ "$fehbg" == "true" ]; then
@@ -209,5 +218,5 @@ trap "echo 'Received signal. Reconfiguring displays.' ; configure_displays" RTMI
 while :
 do
     sleep 60 &
-    wait 
+    wait
 done
